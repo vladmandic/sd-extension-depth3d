@@ -55,6 +55,7 @@ def process_image(
         output_image = output_image.filter(ImageFilter.MedianFilter(size=2 * filter_size - 1))
 
     # get 3d model from depth image
+    temp_dir = shared.opts.temp_dir if shared.opts.temp_dir != '' else None
     extrude_dict = {
         'input_image': input_image,
         'depth_image': output_image,
@@ -67,8 +68,8 @@ def process_image(
         'f_back': f_back,
         'vertex_colors': colors,
         'scene_lights': lights,
-        'path_glb': tempfile.NamedTemporaryFile(delete=False, suffix='.glb', dir=shared.opts.temp_dir).name,
-        'path_stl': tempfile.NamedTemporaryFile(delete=False, suffix='.stl', dir=shared.opts.temp_dir).name,
+        'path_glb': tempfile.NamedTemporaryFile(delete=False, suffix='.glb', dir=temp_dir).name,
+        'path_stl': tempfile.NamedTemporaryFile(delete=False, suffix='.stl', dir=temp_dir).name,
     }
     shared.log.debug(f'Depth3D args: {extrude_dict}')
     path_glb, path_stl = extrude.extrude_depth_3d(**extrude_dict)
@@ -85,7 +86,7 @@ def create_ui(_blocks: gr.Blocks = None):
             with gr.Column():
                 output_image = gr.Image(label="Depth", show_label=True, type="pil", interactive=False, tool="editor", height=gr_height)
             with gr.Column():
-                depth_image = gr.Model3D(label="Viewport", show_label=True, camera_position=(75.0, 90.0, 75.0), zoom_speed=1.0, height=gr_height)
+                depth_image = gr.Model3D(label="Viewport", show_label=True, camera_position=(90.0, 90.0, 60.0), zoom_speed=1.0, height=gr_height)
 
         with gr.Row(elem_id = 'depth_3d_settings'):
             with gr.Accordion(open=True, label="Depth", elem_id="control_input", elem_classes=["small-accordion"]):
