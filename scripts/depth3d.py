@@ -2,16 +2,14 @@
 
 import time
 import tempfile
-from PIL import Image, ImageOps, ImageFilter
 import gradio as gr
+from PIL import Image, ImageOps, ImageFilter
 from modules import shared, script_callbacks
-from modules.control.processors import Processor
-import extrude # pylint: disable=wrong-import-order
 
 
 gr_height = 512
-MODELS=['None', 'Midas Depth Hybrid', 'Leres Depth', 'Zoe Depth', 'Normal Bae']
-processor: Processor = None
+MODELS=['None', 'Midas Depth Hybrid', 'Leres Depth', 'Zoe Depth', 'Marigold Depth', 'Normal Bae']
+processor = None
 css = """
     #depth_3d_images { gap: 0; }
 """
@@ -32,6 +30,9 @@ def process_image(
             f_near,
             f_back,
 ):
+    import extrude # pylint: disable=wrong-import-order
+    from modules.control.processors import Processor
+
     global processor # pylint: disable=global-statement
     if input_image is None:
         return None, None, None
