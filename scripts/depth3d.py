@@ -1,5 +1,7 @@
 # idea from <https://huggingface.co/spaces/toshas/marigold>
 
+import os
+import sys
 import time
 import tempfile
 import gradio as gr
@@ -30,6 +32,7 @@ def process_image(
             f_near,
             f_back,
 ):
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
     import extrude # pylint: disable=wrong-import-order
     from modules.control.processors import Processor
 
